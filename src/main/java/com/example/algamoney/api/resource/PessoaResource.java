@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.algamoney.api.event.RecursoCriadoEvent;
 import com.example.algamoney.api.model.Pessoa;
 import com.example.algamoney.api.repository.PessoaRepository;
+import com.example.algamoney.api.service.PessoaService;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -33,6 +34,9 @@ public class PessoaResource {
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
+
+	@Autowired
+	private PessoaService pessoaService;
 
 	@GetMapping
 	public List<Pessoa> listar() {
@@ -61,23 +65,36 @@ public class PessoaResource {
 		pessoaRepository.deleteById(codigo);
 	}
 
+//	@PutMapping("/{codigo}")
+//	public ResponseEntity<Pessoa> atualizar(@Validated @RequestBody Pessoa pessoa, @PathVariable Long codigo,
+//			HttpServletResponse response) {
+//		Optional<Pessoa> pessoaOptRecuperada = pessoaRepository.findById(codigo);
+//
+//		Pessoa pessoaRecuperada = null;
+//
+//		if (pessoaOptRecuperada.isPresent()) {
+//			pessoaRecuperada = pessoaOptRecuperada.get();
+//			pessoaRecuperada.setNome(pessoa.getNome());
+//			pessoaRecuperada.setEndereco(pessoa.getEndereco());
+//			pessoaRecuperada.setAtivo(pessoa.getAtivo());
+//			pessoaRecuperada = pessoaRepository.save(pessoaRecuperada);
+//		}
+//
+//		return pessoaRecuperada != null ? ResponseEntity.ok(pessoaRecuperada) : ResponseEntity.notFound().build();
+//	}
+
 	@PutMapping("/{codigo}")
-	public ResponseEntity<Pessoa> atualizar(@Validated @RequestBody Pessoa pessoa, @PathVariable Long codigo,
-			HttpServletResponse response) {
-		Optional<Pessoa> pessoaOptRecuperada = pessoaRepository.findById(codigo);
+	public ResponseEntity<Pessoa> atualizar(@PathVariable Long codigo, @Validated @RequestBody Pessoa pessoa) {
 
-		Pessoa pessoaRecuperada = null;
+		Pessoa pessoaSalva = pessoaService.atualizar(codigo, pessoa);
 
-		if (pessoaOptRecuperada.isPresent()) {
-			pessoaRecuperada = pessoaOptRecuperada.get();
-			pessoaRecuperada.setNome(pessoa.getNome());
-			pessoaRecuperada.setEndereco(pessoa.getEndereco());
-			pessoaRecuperada.setAtivo(pessoa.getAtivo());
-			pessoaRecuperada = pessoaRepository.save(pessoaRecuperada);
-		}
-
-		return pessoaRecuperada != null ? ResponseEntity.ok(pessoaRecuperada) : ResponseEntity.notFound().build();
-
+		return ResponseEntity.ok(pessoaSalva);
 	}
 
+	@PutMapping("/{codigo}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void atualizarPropriedadeAtivo(@PathVariable Long codigo, @RequestBody Boolean ativo) {
+
+		pessoaService.atualizarPropriedadeAtivo(codigo, ativo);
+	}
 }
