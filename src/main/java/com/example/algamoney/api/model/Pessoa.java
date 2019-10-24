@@ -8,8 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+
+@Audited
 @Entity
 @Table(name = "pessoa")
+@AuditTable(value = "pessoa_audit")
 public class Pessoa {
 
 	@Id

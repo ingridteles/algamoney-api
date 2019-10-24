@@ -61,7 +61,7 @@ public class PessoaResource {
 
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long codigo) {
+	public void remover(@PathVariable Long codigo, @Validated @RequestBody Pessoa pessoa) {
 		pessoaRepository.deleteById(codigo);
 	}
 
