@@ -2,9 +2,8 @@ package com.example.algamoney.api.model.enums;
 
 public enum TipoLancamento {
 
-	RECEITA(0, "Receita"),
-	DESPESA(1, "Despesa"),
-	DESPESA2(2, "Despesa2");
+	RECEITA(1, "Receita"),
+	DESPESA(2, "Despesa");
 	
 	private int cod;
 	private String nome;

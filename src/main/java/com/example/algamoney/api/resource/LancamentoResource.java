@@ -1,7 +1,7 @@
 package com.example.algamoney.api.resource;
 
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.algamoney.api.model.Lancamento;
+import com.example.algamoney.api.model.dto.LancamentoDTO;
 import com.example.algamoney.api.repository.LancamentoRepository;
 
 @RestController
@@ -25,10 +26,20 @@ public class LancamentoResource {
 //		return lancamentoRepository.findAll();
 //	}
 	
+//	@GetMapping
+//	public List<LancamentoDTO> listarFiltrado() {
+//		return lancamentoRepository.findFiltrado();
+//	}
+	
 	@GetMapping
-	public List<Lancamento> listarFiltrado() {
-		return lancamentoRepository.findFiltrado();
-	}
+	public ResponseEntity<List<LancamentoDTO>> findSequenciais() {
+
+        List<Lancamento> lista = lancamentoRepository.findFiltrado();
+        List<LancamentoDTO> listaDTO = lista.stream().map(obj -> new LancamentoDTO(obj))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listaDTO);
+    }
 	
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Lancamento> buscarPeloCodigo(@PathVariable Long codigo) {

@@ -5,8 +5,6 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.example.algamoney.api.model.enums.Situacao;
 import com.example.algamoney.api.model.enums.TipoLancamento;
 
 //import org.hibernate.envers.AuditTable;
@@ -43,12 +42,11 @@ public class Lancamento {
 
 	private String observacao;
 
-	@Enumerated(EnumType.ORDINAL)
 	private TipoLancamento tipo;
 	
 	@NotNull
 	@Column(name = "situacao")
-	private Integer situacao;
+	private Situacao situacao;
 
 	@ManyToOne
 	@JoinColumn(name = "codigo_categoria")
@@ -60,11 +58,11 @@ public class Lancamento {
 	//@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private Pessoa pessoa;
 
-	public Integer getSituacao() {
+	public Situacao getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(Integer situacao) {
+	public void setSituacao(Situacao situacao) {
 		this.situacao = situacao;
 	}
 
