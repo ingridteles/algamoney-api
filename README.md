@@ -16,6 +16,17 @@ Pergunta:
  Da forma que sei preciso dar o drop em todas as tabelas e rodar o flyway:migrate que executa todos os scripts novamente.
 
 Resposta:
+Olá Ingrid!
+
+Você pode especificar um target, neste caso:
+
+mvn flyway:migrate -Dflyway.target=<sua-versao>
+
+Fiz um loom demonstrando umas formas de tratar erros do flyway, veja se te ajuda:
+
+https://www.useloom.com/share/f2760909efed49009852902f31f46652
+
+mvn flyway:repair -Dflyway.url=jdbc:mysql://localhost:3306/algamoneyapi -Dflyway.user=root -Dflyway.password=root 
 
 # Primeiras consultas e cadastros na API -  3.8 Validando atributos desconhecidos
 
@@ -64,3 +75,21 @@ Não gostaria de criar um valor dummy no enum só para representar o zero.
 
 Obrigada,
 Ingrid
+
+Resposta:
+Olá Ingrid!
+
+Quando você utiliza @Enumerated(EnumType.ORDINAL), você está dizendo ao JPA para inserir no banco de dados a POSIÇÃO na qual foi declarado o seu Enum.
+
+Como os índices começam com 0, o "valor ordinal" para RECEITA é 0 e o "valor ordinal" para DESPESA é 1.
+
+Por isso esse recurso é totalmente desencorajado, pois você sempre precisará manter a ordem dos seus Enums.
+
+Sempre que precisar adicionar algum novo, será obrigada a fazer isso ao final das declarações e não poderá mudar as posições. Uma vez que isso afetará no que já foi persistido.
+
+Quando você obter esse valor da base na sua aplicação, terá o Enum de fato, dessa forma pode exibir os valores que você setou no Enum, normalmente para exibir ao usuário, ou coisa do tipo.
+
+Mas recomendo que utilize o @Enumerated(EnumType.STRING).
+
+
+

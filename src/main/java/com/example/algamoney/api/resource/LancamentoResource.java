@@ -1,5 +1,6 @@
 package com.example.algamoney.api.resource;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.algamoney.api.model.Categoria;
 import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.repository.LancamentoRepository;
 
@@ -20,9 +20,14 @@ public class LancamentoResource {
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
 	
+//	@GetMapping
+//	public List<Lancamento> listar() {
+//		return lancamentoRepository.findAll();
+//	}
+	
 	@GetMapping
-	public List<Lancamento> listar() {
-		return lancamentoRepository.findAll();
+	public List<Lancamento> listarFiltrado() {
+		return lancamentoRepository.findFiltrado();
 	}
 	
 	@GetMapping("/{codigo}")

@@ -1,5 +1,6 @@
 package com.example.algamoney.api.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,13 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.envers.AuditTable;
-import org.hibernate.envers.Audited;
+//import org.hibernate.envers.AuditTable;
+//import org.hibernate.envers.Audited;
 
-@Audited
+//@Audited
 @Entity
 @Table(name = "pessoa")
-@AuditTable(value = "pessoa_audit")
+//@AuditTable(value = "pessoa_audit")
 public class Pessoa {
 
 	@Id
@@ -29,6 +30,18 @@ public class Pessoa {
 	
 	@NotNull
 	private Boolean ativo;
+	
+	@NotNull
+	@Column(name = "tipo_acesso")
+	private Integer tipoAcesso;
+
+	public Integer getTipoAcesso() {
+		return tipoAcesso;
+	}
+
+	public void setTipoAcesso(Integer tipoAcesso) {
+		this.tipoAcesso = tipoAcesso;
+	}
 
 	public Long getCodigo() {
 		return codigo;

@@ -13,15 +13,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-import org.hibernate.envers.AuditTable;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
+import com.example.algamoney.api.model.enums.TipoLancamento;
 
-@Audited
+//import org.hibernate.envers.AuditTable;
+//import org.hibernate.envers.Audited;
+//import org.hibernate.envers.RelationTargetAuditMode;
+
+//@Audited
 @Entity
 @Table(name = "lancamento")
-@AuditTable(value = "lancamento_audit")
+//@AuditTable(value = "lancamento_audit")
 public class Lancamento {
 
 	@Id
@@ -42,16 +45,28 @@ public class Lancamento {
 
 	@Enumerated(EnumType.ORDINAL)
 	private TipoLancamento tipo;
+	
+	@NotNull
+	@Column(name = "situacao")
+	private Integer situacao;
 
 	@ManyToOne
 	@JoinColumn(name = "codigo_categoria")
-	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+	//@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private Categoria categoria;
 
 	@ManyToOne
 	@JoinColumn(name = "codigo_pessoa")
-	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+	//@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private Pessoa pessoa;
+
+	public Integer getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(Integer situacao) {
+		this.situacao = situacao;
+	}
 
 	public Long getCodigo() {
 		return codigo;
