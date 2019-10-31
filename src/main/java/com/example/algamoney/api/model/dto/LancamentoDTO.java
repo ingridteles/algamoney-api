@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.example.algamoney.api.model.Lancamento;
-import com.example.algamoney.api.model.enums.TipoLancamento;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class LancamentoDTO {
 
@@ -12,10 +12,17 @@ public class LancamentoDTO {
 
 	private String descricao;
 
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	//@Temporal(TemporalType.DATE)
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
 	private LocalDate dataVencimento;
 
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	//@Temporal(TemporalType.DATE)
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
 	private LocalDate dataPagamento;
-
+	
 	private BigDecimal valor;
 
 	private String observacao;
@@ -72,7 +79,7 @@ public class LancamentoDTO {
 	public void setDataPagamento(LocalDate dataPagamento) {
 		this.dataPagamento = dataPagamento;
 	}
-
+	
 	public BigDecimal getValor() {
 		return valor;
 	}

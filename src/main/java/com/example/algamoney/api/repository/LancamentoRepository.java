@@ -11,7 +11,8 @@ public interface LancamentoRepository extends JpaRepository <Lancamento, Long> {
 
 	@Query("select l from Lancamento l where "
 			+ "  not((l.situacao = 1)"
-			+ " and (l.pessoa.tipoAcesso = 1)) ")
+			+ " and (l.pessoa.tipoAcesso = 1)) "
+			+ " order by codigo")	
 	List<Lancamento> findFiltrado();
 	
 //	@Query("select l from Lancamento l where "

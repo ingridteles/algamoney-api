@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 
 import com.example.algamoney.api.model.enums.Situacao;
 import com.example.algamoney.api.model.enums.TipoLancamento;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 //import org.hibernate.envers.AuditTable;
 //import org.hibernate.envers.Audited;
@@ -29,13 +30,21 @@ public class Lancamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
-	
+
 	private String descricao;
 
 	@Column(name = "data_vencimento")
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	//@Temporal(TemporalType.DATE)
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
+	//@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDate dataVencimento;
 
 	@Column(name = "data_pagamento")
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	//@Temporal(TemporalType.DATE)
+	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
+	//@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDate dataPagamento;
 
 	private BigDecimal valor;
@@ -43,19 +52,19 @@ public class Lancamento {
 	private String observacao;
 
 	private TipoLancamento tipo;
-	
-	@NotNull
+
+	//@NotNull
 	@Column(name = "situacao")
 	private Situacao situacao;
 
 	@ManyToOne
 	@JoinColumn(name = "codigo_categoria")
-	//@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+	// @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private Categoria categoria;
 
 	@ManyToOne
 	@JoinColumn(name = "codigo_pessoa")
-	//@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+	// @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private Pessoa pessoa;
 
 	public Situacao getSituacao() {

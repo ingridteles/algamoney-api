@@ -91,5 +91,38 @@ Quando você obter esse valor da base na sua aplicação, terá o Enum de fato, 
 
 Mas recomendo que utilize o @Enumerated(EnumType.STRING).
 
+Pergunta:
+ Fórum Fullstack Angular e Spring Relacionamentos entre recursos REST Desafio: Cadastrando o primeiro lançamento 
+ 
+ Fiz o desafio e testei a inclusão com o seguinte post
 
+{
+    "descricao": "Salário mensal",
+    "dataVencimento": "10/10/2017",
+    "dataPagamento": "10/10/2017",
+    "valor": 6500.00,
+    "observacao": "Distribuição de lucros",
+    "categoria": {
+    	"codigo": 1
+    } ,
+    "pessoa": {
+    	"codigo": 1
+    } 
+}
+
+mas ao fazer o get http://localhost:8080/lancamentos/18
+as datas são recuperadas com um dia a menos, vocês sabem porque?
+
+{
+    "codigo": 18,
+    "descricao": "Salário mensal",
+    "dataVencimento": "09/10/2017",
+    "dataPagamento": "09/10/2017",
+    "valor": 6500.00,
+    "observacao": "Distribuição de lucros",
+    "tipo": 1,
+    "situacao": 1,
+    "categoriaId": 1,
+    "pessoaId": 1
+}
 
