@@ -67,10 +67,16 @@ public class LancamentoResource {
 //				.orElse(ResponseEntity.notFound().build());
 //	}
 	
+//	@GetMapping("/{codigo}")
+//	public ResponseEntity<Lancamento> buscarPeloCodigo(@PathVariable Long codigo) {
+//		Optional<Lancamento> lancamentoOpt = lancamentoRepository.findById(codigo);
+//		return lancamentoOpt.isPresent() ? ResponseEntity.ok(lancamentoOpt.get()) : ResponseEntity.notFound().build();
+//	}
+	
 	@GetMapping("/{codigo}")
-	public ResponseEntity<Lancamento> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Lancamento> lancamentoOpt = lancamentoRepository.findById(codigo);
-		return lancamentoOpt.isPresent() ? ResponseEntity.ok(lancamentoOpt.get()) : ResponseEntity.notFound().build();
+	public ResponseEntity<Lancamento> find(@PathVariable Long codigo) {
+		Lancamento lancamento = lancamentoService.find(codigo);
+		return ResponseEntity.ok(lancamento);
 	}
 
 	

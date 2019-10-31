@@ -126,3 +126,5 @@ as datas são recuperadas com um dia a menos, vocês sabem porque?
     "pessoaId": 1
 }
 
+
+https://elias.praciano.com/2015/07/como-ajustar-o-fuso-horario-ou-timezone-no-mysql/

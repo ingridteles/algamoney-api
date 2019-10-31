@@ -1,6 +1,9 @@
 package com.example.algamoney.api.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.algamoney.api.model.Lancamento;
@@ -51,4 +54,8 @@ public class LancamentoService {
 		
 	}
 
+	public Lancamento find(Long codigo) {
+		Optional<Lancamento> opt = lancamentoRepository.findById(codigo);
+		return opt.orElseThrow(() -> new EmptyResultDataAccessException(1));
+	}
 }

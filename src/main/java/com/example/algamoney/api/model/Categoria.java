@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-//import org.hibernate.envers.AuditTable;
-//import org.hibernate.envers.Audited;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
 //@Audited
 @Entity
