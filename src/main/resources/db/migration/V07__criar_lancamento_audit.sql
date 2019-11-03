@@ -1,4 +1,4 @@
-CREATE TABLE app_audit.lancamento_audit (
+CREATE TABLE app_audit.lancamento_audit(
   codigo BIGINT (20),
   rev integer NOT NULL,
   revtype smallint,

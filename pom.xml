@@ -114,6 +114,7 @@
 					<user>root</user>
 					<password>root</password>
 					<url>jdbc:mysql://localhost/algamoneyapi</url>
+					<!-- url>jdbc:mysql://localhost/algamoneyapi?createDatabaseIfNotExist=true&useSSL=false&useTimezone=true&serverTimezone=America/Sao_Paulo</url-->
 				</configuration>
 			</plugin>
 		</plugins>

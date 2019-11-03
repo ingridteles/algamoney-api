@@ -7,4 +7,5 @@ INSERT INTO categoria (nome) values ('Alimentação');
 INSERT INTO categoria (nome) values ('Supermercado');
 INSERT INTO categoria (nome) values ('Farmacia');
 INSERT INTO categoria (nome) values ('Outros');
-
+select * from lancamento;
+select * from categoria

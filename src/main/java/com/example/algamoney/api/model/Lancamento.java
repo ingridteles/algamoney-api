@@ -30,9 +30,11 @@ public class Lancamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
-
+	
+	@NotNull
 	private String descricao;
-
+    
+	@NotNull
 	@Column(name = "data_vencimento")
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	//@Temporal(TemporalType.DATE)
@@ -47,21 +49,25 @@ public class Lancamento {
 	//@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDate dataPagamento;
 
+	@NotNull
 	private BigDecimal valor;
 
 	private String observacao;
 
+	@NotNull
 	private TipoLancamento tipo;
 
 	//@NotNull
 	@Column(name = "situacao")
 	private Situacao situacao;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_categoria")
 	// @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private Categoria categoria;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_pessoa")
 	// @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)

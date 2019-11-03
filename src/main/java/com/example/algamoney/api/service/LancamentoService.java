@@ -7,9 +7,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.algamoney.api.model.Lancamento;
+import com.example.algamoney.api.model.Pessoa;
 import com.example.algamoney.api.model.enums.Situacao;
 import com.example.algamoney.api.model.enums.TipoLancamento;
 import com.example.algamoney.api.repository.LancamentoRepository;
+import com.example.algamoney.api.repository.PessoaRepository;
+import com.example.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
 
 @Service
 public class LancamentoService {
@@ -18,13 +21,19 @@ public class LancamentoService {
 	private LancamentoRepository lancamentoRepository;
 	
 	@Autowired
-	private PessoaService pessoaService;
+	private PessoaRepository pessoaRepository;
 	
 	@Autowired
 	private CategoriaService categoriaService;
 	
-	public Lancamento criar(Lancamento lancamento) {
+	public Lancamento salvar(Lancamento lancamento) {
 		Lancamento lancamentoNovo = new Lancamento();
+		
+		Pessoa pessoa = pessoaRepository.findById(lancamento.getPessoa().getCodigo()).orElse(null);
+		if (pessoa == null || pessoa.isInativo()) {
+			throw new PessoaInexistenteOuInativaException();
+			
+		}
 		
 		
 		lancamentoNovo.setDescricao(lancamento.getDescricao());

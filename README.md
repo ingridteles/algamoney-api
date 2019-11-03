@@ -128,3 +128,15 @@ as datas são recuperadas com um dia a menos, vocês sabem porque?
 
 
 https://elias.praciano.com/2015/07/como-ajustar-o-fuso-horario-ou-timezone-no-mysql/
+
+
+Project build error: Non-parseable POM C:\dev\workspace\algamoney-api\pom.xml: 
+entity reference name can not contain character =' (position: START_TAG seen ...sql://
+ localhost/algamoneyapi?createDatabaseIfNotExist=true&useSSL=... @117:84)
+ 
+ 
+ Pergunta: 5.5. Validando lançamento com Bean Validation
+ Qual a diferença entre o
+@Valid do import javax.validation.Valid;
+e o 
+@Validated do import org.springframework.validation.annotation.Validated;?
