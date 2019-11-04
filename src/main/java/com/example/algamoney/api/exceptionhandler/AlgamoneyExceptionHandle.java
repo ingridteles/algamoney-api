@@ -41,14 +41,14 @@ public class AlgamoneyExceptionHandle extends ResponseEntityExceptionHandler {
 
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
-	@ExceptionHandler({ConstraintViolationException.class, DataIntegrityViolationException.class})
-	public ResponseEntity<Object> handleConstraintViolationException(DataIntegrityViolationException ex,  WebRequest request) {
-		String mensagemUsuario = messageSource.getMessage("recurso.operacao-nao-permitida", null,
-				LocaleContextHolder.getLocale());
-		String mensagemDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
-		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
-		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-		
+
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+		List<Erro> erros = criarListaDeErros(ex.getBindingResult());
+
+		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 
 	@ExceptionHandler({ EmptyResultDataAccessException.class })
@@ -61,14 +61,24 @@ public class AlgamoneyExceptionHandle extends ResponseEntityExceptionHandler {
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
+	
+	@ExceptionHandler({ DataIntegrityViolationException.class } )
+	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+		String mensagemUsuario = messageSource.getMessage("recurso.operacao-nao-permitida", null, LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
 
-	@Override
-	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
+	@ExceptionHandler({ ConstraintViolationException.class })
+	public ResponseEntity<Object> handleConstraintViolationException(DataIntegrityViolationException ex,
+			WebRequest request) {
+		String mensagemUsuario = messageSource.getMessage("recurso.operacao-nao-permitida", null,
+				LocaleContextHolder.getLocale());
+		String mensagemDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 
-		List<Erro> erros = criarListaDeErros(ex.getBindingResult());
-
-		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 
 	private List<Erro> criarListaDeErros(BindingResult bindingResult) {
@@ -80,7 +90,6 @@ public class AlgamoneyExceptionHandle extends ResponseEntityExceptionHandler {
 
 			erros.add(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		}
-
 		return erros;
 	}
 
@@ -100,7 +109,5 @@ public class AlgamoneyExceptionHandle extends ResponseEntityExceptionHandler {
 		public String getMensagemDesenvolvedor() {
 			return mensagemDesenvolvedor;
 		}
-
 	}
-
 }

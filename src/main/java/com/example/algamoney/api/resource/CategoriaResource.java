@@ -7,7 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.domain.Example;
+import org.springframework.data.repository.query.QueryByExampleExecutor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.http.ResponseEntity;
@@ -28,17 +28,9 @@ public class CategoriaResource {
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
-	@Autowired
-	private ApplicationEventPublisher publisher;   
-	
 
-	// @GetMapping
-	// public ResponseEntity<?> listar(){
-	// List<Categoria> categorias = categoriaRepository.findAll();
-	// return !categorias.isEmpty() ? ResponseEntity.ok(categorias) :
-	// ResponseEntity.noContent().build();
-	// }
+	@Autowired
+	private ApplicationEventPublisher publisher;
 
 	@GetMapping
 	public List<Categoria> listar() {
@@ -48,27 +40,13 @@ public class CategoriaResource {
 	@PostMapping
 	public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
 		Categoria categoriaSalva = categoriaRepository.save(categoria);
-
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getCodigo()));
-		
 		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
-	}
-
-	// @GetMapping("/{codigo}")
-	public Categoria buscarPeloCodigoComFindOne(@PathVariable Long codigo) {
-
-		Categoria categoriaExample = new Categoria();
-		categoriaExample.setCodigo(codigo);
-
-		Example<Categoria> example = Example.of(categoriaExample);
-
-		return this.categoriaRepository.findOne(example).orElse(null);
 	}
 
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Categoria> buscarPeloCodigo(@PathVariable Long codigo) {
-		return this.categoriaRepository.findById(codigo)
-				.map(categoria -> ResponseEntity.ok(categoria))
+		return this.categoriaRepository.findById(codigo).map(categoria -> ResponseEntity.ok(categoria))
 				.orElse(ResponseEntity.notFound().build());
 
 		// Resolução usando o .isPresent()

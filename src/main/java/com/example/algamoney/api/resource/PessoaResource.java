@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,19 +29,26 @@ import com.example.algamoney.api.service.PessoaService;
 @RestController
 @RequestMapping("/pessoas")
 public class PessoaResource {
-
+	
 	@Autowired
 	private PessoaRepository pessoaRepository;
-
-	@Autowired
-	private ApplicationEventPublisher publisher;
-
+	
 	@Autowired
 	private PessoaService pessoaService;
-
+	
+	@Autowired
+	private ApplicationEventPublisher publisher;
+	
 	@GetMapping
 	public List<Pessoa> listar() {
 		return pessoaRepository.findAll();
+	}
+
+	@PostMapping
+	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
+		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getCodigo()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
 	}
 
 	@GetMapping("/{codigo}")
@@ -48,53 +56,23 @@ public class PessoaResource {
 		Optional<Pessoa> pessoaOpt = pessoaRepository.findById(codigo);
 		return pessoaOpt.isPresent() ? ResponseEntity.ok(pessoaOpt.get()) : ResponseEntity.notFound().build();
 	}
-
-	@PostMapping
-	public ResponseEntity<Pessoa> criar(@Validated @RequestBody Pessoa pessoa, HttpServletResponse response) {
-		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
-
-		publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getCodigo()));
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
-
-	}
-
+	
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long codigo, @Validated @RequestBody Pessoa pessoa) {
-		pessoaRepository.deleteById(codigo);
+	public void remover(@PathVariable Long codigo) {
+		//pessoaRepository.delete(codigo);
+		pessoaService.delete(codigo);
 	}
-
-//	@PutMapping("/{codigo}")
-//	public ResponseEntity<Pessoa> atualizar(@Validated @RequestBody Pessoa pessoa, @PathVariable Long codigo,
-//			HttpServletResponse response) {
-//		Optional<Pessoa> pessoaOptRecuperada = pessoaRepository.findById(codigo);
-//
-//		Pessoa pessoaRecuperada = null;
-//
-//		if (pessoaOptRecuperada.isPresent()) {
-//			pessoaRecuperada = pessoaOptRecuperada.get();
-//			pessoaRecuperada.setNome(pessoa.getNome());
-//			pessoaRecuperada.setEndereco(pessoa.getEndereco());
-//			pessoaRecuperada.setAtivo(pessoa.getAtivo());
-//			pessoaRecuperada = pessoaRepository.save(pessoaRecuperada);
-//		}
-//
-//		return pessoaRecuperada != null ? ResponseEntity.ok(pessoaRecuperada) : ResponseEntity.notFound().build();
-//	}
-
+	
 	@PutMapping("/{codigo}")
-	public ResponseEntity<Pessoa> atualizar(@PathVariable Long codigo, @Validated @RequestBody Pessoa pessoa) {
-
+	public ResponseEntity<Pessoa> atualizar(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa) {
 		Pessoa pessoaSalva = pessoaService.atualizar(codigo, pessoa);
-
 		return ResponseEntity.ok(pessoaSalva);
 	}
-
+	
 	@PutMapping("/{codigo}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void atualizarPropriedadeAtivo(@PathVariable Long codigo, @RequestBody Boolean ativo) {
-
 		pessoaService.atualizarPropriedadeAtivo(codigo, ativo);
 	}
 }

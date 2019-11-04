@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,18 +15,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.example.algamoney.api.model.enums.Situacao;
 import com.example.algamoney.api.model.enums.TipoLancamento;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-//import org.hibernate.envers.AuditTable;
-//import org.hibernate.envers.Audited;
-//import org.hibernate.envers.RelationTargetAuditMode;
-
-//@Audited
 @Entity
 @Table(name = "lancamento")
-//@AuditTable(value = "lancamento_audit")
 public class Lancamento {
 
 	@Id
@@ -37,16 +32,10 @@ public class Lancamento {
 	@NotNull
 	@Column(name = "data_vencimento")
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	//@Temporal(TemporalType.DATE)
-	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
-	//@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDate dataVencimento;
 
 	@Column(name = "data_pagamento")
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	//@Temporal(TemporalType.DATE)
-	//@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
-	//@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDate dataPagamento;
 
 	@NotNull
@@ -55,31 +44,18 @@ public class Lancamento {
 	private String observacao;
 
 	@NotNull
+	@Enumerated(EnumType.STRING)
 	private TipoLancamento tipo;
-
-	//@NotNull
-	@Column(name = "situacao")
-	private Situacao situacao;
 
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_categoria")
-	// @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private Categoria categoria;
 
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "codigo_pessoa")
-	// @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private Pessoa pessoa;
-
-	public Situacao getSituacao() {
-		return situacao;
-	}
-
-	public void setSituacao(Situacao situacao) {
-		this.situacao = situacao;
-	}
 
 	public Long getCodigo() {
 		return codigo;

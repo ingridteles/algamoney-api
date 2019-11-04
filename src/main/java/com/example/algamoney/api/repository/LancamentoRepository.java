@@ -1,26 +1,10 @@
 package com.example.algamoney.api.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import com.example.algamoney.api.model.Lancamento;
+import com.example.algamoney.api.repository.lancamento.LancamentoRepositoryQuery;
 
-public interface LancamentoRepository extends JpaRepository <Lancamento, Long> {
-
-	@Query("select l from Lancamento l where "
-			+ "  not((l.situacao = 1)"
-			+ " and (l.pessoa.tipoAcesso = 1)) "
-			+ " order by codigo")	
-	List<Lancamento> findFiltrado();
-	
-//	@Query("select l from Lancamento l where "
-//			+ "  not((l.situacao = 1) "
-//			+ " and (l.pessoa.tipoAcesso = 1)) ")
-//	List<Lancamento> findFiltrado();
-	
-	
-	
+public interface LancamentoRepository extends JpaRepository<Lancamento, Long>, LancamentoRepositoryQuery {
 
 }
