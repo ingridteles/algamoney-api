@@ -29,6 +29,18 @@ public class LancamentoService {
 		
 		return lancamentoRepository.save(lancamento);
 	}
+	
+	public Lancamento buscarPessoaPeloCodigo(Long codigo) {
+		Lancamento lancamentoSalvo = this.lancamentoRepository.findById(codigo)
+				.orElseThrow(() -> new EmptyResultDataAccessException(1));
+		return lancamentoSalvo;
+	}
+	
+	public void delete(Long codigo) {
+		Lancamento lancamento = buscarPessoaPeloCodigo(codigo);
+		lancamentoRepository.delete(lancamento);
+	}
+
 
 //	public Lancamento find(Long codigo) {
 //		Optional<Lancamento> opt = lancamentoRepository.findById(codigo);
