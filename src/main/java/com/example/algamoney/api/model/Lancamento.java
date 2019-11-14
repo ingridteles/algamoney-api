@@ -15,9 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.example.algamoney.api.model.enums.TipoLancamento;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Entity
 @Table(name = "lancamento")
 public class Lancamento {
@@ -28,14 +25,12 @@ public class Lancamento {
 	
 	@NotNull
 	private String descricao;
-    
+
 	@NotNull
 	@Column(name = "data_vencimento")
-	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataVencimento;
 
 	@Column(name = "data_pagamento")
-	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataPagamento;
 
 	@NotNull
@@ -153,4 +148,5 @@ public class Lancamento {
 			return false;
 		return true;
 	}
+
 }

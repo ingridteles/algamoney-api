@@ -18,19 +18,17 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication()
-		.withUser("admin")
-		.password("{noop}admin")
-		.roles("ROLE");
+			.withUser("admin").password("admin").roles("ROLE");
 	}
-
+	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/categorias").permitAll()
-		.anyRequest().authenticated().and()
-
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-		.csrf().disable();
+				.antMatchers("/categorias").permitAll()
+				.anyRequest().authenticated()
+				.and()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+			.csrf().disable();
 	}
 	
 	@Override
@@ -38,17 +36,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		resources.stateless(true);
 	}
 	
-//	@Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
-
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//	    User.UserBuilder builder = User.withDefaultPasswordEncoder();
-//	    InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//	    manager.createUser(builder.username("admin").password("admin").roles("ROLE").build());
-//	    return manager;
-//	}
 }

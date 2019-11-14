@@ -1,29 +1,24 @@
 package com.example.algamoney.api.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.example.algamoney.api.model.Lancamento;
 import com.example.algamoney.api.model.Pessoa;
 import com.example.algamoney.api.repository.PessoaRepository;
 
 @Service
 public class PessoaService {
-
+	
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
 	public Pessoa atualizar(Long codigo, Pessoa pessoa) {
-
 		Pessoa pessoaSalva = buscarPessoaPeloCodigo(codigo);
-
+		
 		BeanUtils.copyProperties(pessoa, pessoaSalva, "codigo");
-
-		return this.pessoaRepository.save(pessoaSalva);
+		return pessoaRepository.save(pessoaSalva);
 	}
 
 	public void atualizarPropriedadeAtivo(Long codigo, Boolean ativo) {
@@ -31,20 +26,13 @@ public class PessoaService {
 		pessoaSalva.setAtivo(ativo);
 		pessoaRepository.save(pessoaSalva);
 	}
-
+	
 	public Pessoa buscarPessoaPeloCodigo(Long codigo) {
-		Pessoa pessoaSalva = this.pessoaRepository.findById(codigo)
-				.orElseThrow(() -> new EmptyResultDataAccessException(1));
+		Pessoa pessoaSalva = pessoaRepository.findOne(codigo);
+		if (pessoaSalva == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
 		return pessoaSalva;
 	}
-
-	public void delete(Long codigo) {
-		Pessoa pessoa = buscarPessoaPeloCodigo(codigo);
-		pessoaRepository.delete(pessoa);
-	}
-
-	public Pessoa find(Long codigo) {
-		Optional<Pessoa> opt = pessoaRepository.findById(codigo);
-		return opt.isPresent() ? opt.get() : null;
-	}
+	
 }
